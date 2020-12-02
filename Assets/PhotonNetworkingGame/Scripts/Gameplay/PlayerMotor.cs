@@ -13,6 +13,14 @@ namespace PhotonNetworkingGame.Gameplay
 
         private Vector3 inputVector;
 
+        public void Initialize()
+        {
+            if(IsMine == false)
+            {
+                rb.isKinematic = true;
+            }
+        }
+
         private void Update()
         {
             if (IsMine == false)
@@ -25,18 +33,15 @@ namespace PhotonNetworkingGame.Gameplay
 
         void FixedUpdate()
         {
-            if (IsMine)
+            if (IsMine == false)
             {
-                if (inputVector != Vector3.zero)
-                    this.rb.velocity = inputVector * Time.fixedDeltaTime * speed;
-                else
-                    this.rb.velocity = Vector3.zero;
-            }
-            else
-            {
-                this.rb.velocity = Vector3.zero;
+                return;
             }
 
+            if (inputVector != Vector3.zero)
+                this.rb.velocity = inputVector * Time.fixedDeltaTime * speed;
+            else
+                this.rb.velocity = Vector3.zero;
             this.rb.angularVelocity = 0;
         }
     }

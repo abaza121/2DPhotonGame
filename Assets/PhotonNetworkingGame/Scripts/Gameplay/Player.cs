@@ -1,6 +1,7 @@
 ﻿using Photon.Pun;
 using UnityEngine;
 using PhotonNetworkingGame.Managers;
+using System.Collections;
 
 namespace PhotonNetworkingGame.Gameplay
 {
@@ -25,6 +26,7 @@ namespace PhotonNetworkingGame.Gameplay
             }
 
             playerMotor.IsMine = base.photonView.IsMine;
+            playerMotor.Initialize();
         }
 
         void OnPlayerDead()
