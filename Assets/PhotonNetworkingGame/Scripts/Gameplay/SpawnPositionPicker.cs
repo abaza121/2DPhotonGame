@@ -10,14 +10,16 @@ namespace PhotonNetworkingGame.Gameplay
         [SerializeField]
         private Transform[] spawnPoints;
 
-        public Vector3 GetPositionForNetworkPlayerId()
-        {
-            return spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber % spawnPoints.Length].position;
-        }
-
         public Vector3 GetRandomPosition()
         {
-            return spawnPoints[Random.Range(0, spawnPoints.Length)].position;
+            if(PhotonNetwork.LocalPlayer.ActorNumber == 0)
+            return spawnPoints[Random.Range(0, 3)].position;
+            else if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
+            return spawnPoints[Random.Range(3, 6)].position;
+            else if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
+            return spawnPoints[Random.Range(6, 9)].position;
+            else
+            return spawnPoints[Random.Range(0, 9)].position;
         }
     }
 }

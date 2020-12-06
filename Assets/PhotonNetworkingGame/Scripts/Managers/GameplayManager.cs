@@ -19,8 +19,18 @@ namespace PhotonNetworkingGame.Managers
             }
         }
 
+        public PlayerDeathHandler PlayerDeathHandler
+        {
+            get
+            {
+                return playerDeathHandler;
+            }
+        }
+
         [SerializeField]
         private SpawnPositionPicker spawnPositionPicker;
+        [SerializeField]
+        private PlayerDeathHandler playerDeathHandler;
         [SerializeField]
         private string playerPrefab;
 
@@ -28,7 +38,15 @@ namespace PhotonNetworkingGame.Managers
         void Start()
         {
             Instance = this;
-            Photon.Pun.PhotonNetwork.Instantiate(playerPrefab, spawnPositionPicker.GetPositionForNetworkPlayerId(), Quaternion.identity);
+            Photon.Pun.PhotonNetwork.Instantiate(playerPrefab, spawnPositionPicker.GetRandomPosition(), Quaternion.identity);
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
         }
     }
 }

@@ -18,20 +18,39 @@ namespace PhotonNetworkingGame.Gameplay
 
         void Start()
         {
-            if (base.photonView.IsMine)
+            this.IsMine = base.photonView.IsMine;
+            if(base.photonView.IsMine)
+            {
+                this.playerHealth.PlayerDead += OnPlayerDead;
+            }
+
+            if(PhotonNetwork.IsMasterClient)
             {
                 this.playerCollisionHandler.PlayerCollidedWithAnotherPlayer += this.playerHealth.TakeDamage;
-                this.playerHealth.PlayerDead += OnPlayerDead;
                 playerHealth.ResetHealth();
             }
 
+            this.playerHealth.PlayerDead += GameplayManager.Instance.PlayerDeathHandler.OnPlayerDead;
             playerMotor.IsMine = base.photonView.IsMine;
             playerMotor.Initialize();
         }
 
-        void OnPlayerDead()
+        void OnPlayerDead(Vector3 position)
         {
             Respawn();
+        }
+
+        private void OnDestroy()
+        {
+            if (this.IsMine)
+            {
+                this.playerHealth.PlayerDead -= OnPlayerDead;
+            }
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                this.playerCollisionHandler.PlayerCollidedWithAnotherPlayer -= this.playerHealth.TakeDamage;
+            }
         }
 
         private void Respawn()
